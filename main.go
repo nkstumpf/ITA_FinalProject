@@ -14,12 +14,24 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// ignore drivers pkg with the underscore
+
 // point to db
+// this will use listen and serve
 
 var port = "8000"
+
+// use pointer here. otherwise go will open a COPY of the database every time
 var db *sql.DB
 
+// enable cors because we're making a request to a 'third party' (our database) for information. So we'll make a function that can add this to the headers whenever needed.
+func enableCors(w *http.ResponseWriter) { // cross origin resource sharing
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 // Structs (data structures model)
+
+// Product : this is the correct format for  commment of of a struct
 type Product struct {
 	ID          string `json:"id"`
 	Name        string `json:"name"`
@@ -27,44 +39,74 @@ type Product struct {
 	Price       string `json:"price"`
 }
 
-// Initialize products variable as a slice Book struct
+// Initialize products variable as a slice of Product struct
 var products []Product
 
-// Get all books function
+// Get all products function
 func getProducts(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json") // sets content type
 
-	// send query to db
+	// set header content type
+	w.Header().Set("Content-Type", "application/json")
+
+	// set structure of what we are going to return
+	products := []Product{}
+
+	// the query we send to db
+	// query := `SELECT id, name, description, price FROM products`
+	query := "SELECT * FROM products"
+
+	// make sure we have cors in the header
+	enableCors(&w)
+
+	rows, err := db.Query(query)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	for rows.Next() {
+		var product Product
+		err := rows.Scan(&product.ID, &product.Name, &product.Description, &product.Price)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		products = append(products, product)
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json") //let header know it's in a json
 
 	// return this to browser
-	json.NewEncoder(w).Encode(products)
+	json.NewEncoder(w).Encode(products) // this is returning empty strings?
 
 }
 
 // Get single product function
-func getProduct(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json") // key
-	params := mux.Vars(r)                              // get params
 
-	// loop through products and find correct id
+// func getProduct(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-Type", "application/json") // key
+// 	params := mux.Vars(r)                              // get params
 
-	for _, item := range products {
-		if item.ID == params["id"] {
-			json.NewEncoder(w).Encode(item)
-			return
-		}
-	}
+// 	// loop through products and find correct id
 
-	json.NewEncoder(w).Encode(&Product{}) // Return the book struct?
+// 	for _, item := range products {
+// 		if item.ID == params["id"] {
+// 			json.NewEncoder(w).Encode(item)
+// 			return
+// 		}
+// 	}
 
-}
+// 	json.NewEncoder(w).Encode(&Product{}) // Return the product struct?
+
+// }
 
 func main() {
 
 	fmt.Println("Testing MySQL connection...")
 
 	// For mySQL driver import:
-	database, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/products_db")
+	database, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/products_db") // Always use a fake password here
 
 	db = database
 
@@ -76,6 +118,8 @@ func main() {
 
 	defer database.Close()
 
+	// testing only //
+	//////////////////
 	results, err := database.Query("SELECT * FROM products")
 	if err != nil {
 		panic(err.Error())
@@ -92,22 +136,17 @@ func main() {
 		// fmt.Println("Record Returned:")
 		fmt.Println(product)
 	}
+	////////////////////
+	////////////////////
 
 	// initialize mux router
 
 	router := mux.NewRouter() // creates a new router
 
-	// Mock Data
-
-	// product 1
-	// products = append(products, Product{ID: "1", Name: "Burton Slash", Description: "This is a cool snowboard", Price: "189.99"})
-	// product 2
-	// products = append(products, Product{ID: "2", Name: "Ride Infinity", Description: "This is aanother cool snowboard", Price: "179.99"})
-
 	// Create route handler - Sets our URL endpoints
 
-	router.HandleFunc("/api/products", getProducts).Methods("GET")     // get all products
-	router.HandleFunc("/api/products/{id}", getProduct).Methods("GET") // get single product
+	router.HandleFunc("/products", getProducts).Methods("GET") // get all products
+	// router.HandleFunc("/products/{id}", getProduct).Methods("GET") // get single product
 
 	//  Run server
 

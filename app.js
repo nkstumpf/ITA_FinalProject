@@ -1,12 +1,26 @@
 console.log("connected to js file");
 
-var snow, skate, surf, long, content;
+// require axios
+// var axios = require('axios');
 
+var all, snow, skate, surf, long, content;
+
+all = document.getElementById('all');
 snow = document.getElementById('snow');
 skate = document.getElementById('skate');
 surf = document.getElementById('surf');
 long = document.getElementById('long');
 content = document.getElementById('content');
+
+all.addEventListener('click', function() {
+    console.log("all button was clicked");
+
+    // retreive data
+    getProducts();
+
+    // getProducts(category);
+
+});
 
 snow.addEventListener('click', function() {
     console.log("snow button was clicked");
@@ -45,17 +59,27 @@ long.addEventListener('click', function() {
 function getProducts() {
 
     // query api
-    axios.get('localhost:8000/api/products')
+    axios.get('http://localhost:8000/products')
 
     // response 
     .then((response) => {
-        console.log(response);
-        let products = response.data;
-        let output = '';
+
+        content.innerHTML = generateHTML(response);
         
     });
-
-    console.log(output);
-    content.innerHTML = output;
         
+}
+
+function generateHTML(response) {
+    console.log(response);
+    var responseData = response.data;
+    console.log(responseData);
+    var output = '';
+
+    for(i=0; i < responseData.length; i++){
+
+        output += `${responseData[i].id} ${responseData[i].name} ${responseData[i].description} ${responseData[i].price}`; // add later: products[i].image, products[i].category
+    }
+
+    return  output
 }
