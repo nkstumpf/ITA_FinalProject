@@ -52,8 +52,8 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 	products := []Product{}
 
 	// the query we send to db
-	// query := `SELECT id, name, description, price FROM products`
-	query := "SELECT * FROM products"
+	query := `SELECT id, name, description, price FROM products`
+	// query := "SELECT * FROM products"
 
 	// make sure we have cors in the header
 	enableCors(&w)
@@ -77,8 +77,8 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json") //let header know it's in a json
 
-	// return this to browser
-	json.NewEncoder(w).Encode(products) // this is returning empty strings?
+	// return this via json data
+	json.NewEncoder(w).Encode(products)
 
 }
 

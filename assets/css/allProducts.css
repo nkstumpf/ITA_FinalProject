@@ -1,0 +1,188 @@
+.page-title {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background-color: black;
+}
+
+.page-title h2 {
+    color: white;
+    font-family: 'Staatliches', cursive;
+    font-size: 3em;
+}
+
+.featured-products {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    background-color: white;
+    border-right: dotted black 3px;
+    border-bottom: dotted black 3px;
+    border-left: dotted black 3px;
+}
+
+.featured-products img {
+    padding: 25px;
+}
+
+.featured-products-banner {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    border-radius: 20px 20px 0px 0px; 
+    background-color: black;
+}
+
+.featured-products-banner h3 {
+    color: white;
+    font-family: 'Staatliches', cursive;
+    font-size: 2em;
+}
+
+.searchbar-container {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-image: linear-gradient(to right, white, lightgray, white);
+}
+
+.searchbar-container i, h3 {
+    color: white;
+}
+
+.searchbar {
+    background-color: white;
+}
+
+.search-btn {
+    font-family: 'Roboto Condensed', sans-serif;
+    background: white;
+    border: none; 
+}
+
+.searchbar i {
+    color: black;
+    padding: 5px;
+    transition: font-size, .5s;
+}
+.searchbar i:hover{
+    font-size: 1.2em;
+}
+
+#search-input {
+    width: 600px;
+    font-size: 1em;
+    text-align: center;
+    border: none;
+    box-shadow: none;
+}
+
+.products-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.product-name {
+    font-family: 'Roboto Condensed', sans-serif;
+    color: black;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.product-price {
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.flex-product {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 10% 20% 5% auto 10%;
+    grid-column-gap: 10px;
+    align-items: center;
+    text-align: center;
+}
+
+.product-thumbnail {
+    width: 150px;
+    height: 150px;
+    margin: 20px;
+}
+
+.sku {
+    color: black;
+    font-weight: bold;
+    border: solid black 2px;
+    padding: 10px;
+}
+
+.product-description {
+    color: black;
+}
+
+@media (max-width: 800px) {
+    .featured-products {
+        display: flex;
+        flex-direction: column;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+
+    .featured-products-banner {
+        display: block;
+        text-align: center;
+        padding-top: 10px;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+
+    .featured-products img {
+        margin: 0 auto;
+    }
+
+
+}
+
+@media (max-width: 1150px) {
+
+    .flex-product {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .product-name {
+        margin-bottom: 20px;
+    }
+
+    .product-price {
+        margin-bottom: 20px;
+    }
+
+    .sku {
+        margin-bottom: 20px;
+    }
+
+    .product-description {
+        margin-bottom: 20px;
+    }
+
+    #search-input {
+        width: 300px;
+    }
+
+}

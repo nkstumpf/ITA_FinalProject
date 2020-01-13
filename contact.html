@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- css -->
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/slider.css">
+    <link rel="stylesheet" href="assets/css/banner.css">
+    <link rel="stylesheet" href="assets/css/featured.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
+    <link rel="stylesheet" href="assets/css/contact.css">
+    <link rel="stylesheet" href="assets/css/media.css">
+    <link rel="stylesheet" href="assets/css/allproducts.css">
+
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Liu+Jian+Mao+Cao|Roboto+Condensed|Staatliches&display=swap"
+        rel="stylesheet">
+    <!-- font awesome icons -->
+    <script src="https://kit.fontawesome.com/4036413a70.js"></script>
+    <title>Contact Page</title>
+</head>
+
+<body class="container">
+    <!-- flexbox header -->
+    <header class="flex-container header">
+        <a href="index.html"><h1 id="logo">Nollie</h1></a>
+        <nav>
+            <ul class="flex-container nav">
+                <li><a href="./allProducts.html">Products</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-title">
+        <h2>Contact Us!</h2>
+    </div>
+
+    <form class="myForm" action="./formSubmitted.html" method="get">
+        <fieldset id="personal-info">
+            <label for="customer_name">Name</label>
+            <input type="text" name="customer_name" id="customer_name" required>
+
+            <label for="phone_number">Phone </label>
+            <input type="tel" name="phone_number" id="phone_number" required>
+
+            <label for="email_address">Email </label>
+            <input type="email" name="email_address" id="email_address" required>
+        </fieldset>
+        <fieldset id="preferred-contact">
+            <legend class="form-header">Preferred contact method:</legend>
+            <label> <input type="radio" name="contact" id="phone_btn" required value="phone">Phone</label>
+            <label> <input type="radio" name="contact" id="email_btn" required value="email">Email</label>
+        </fieldset>
+
+        <fieldset id="extras">
+            <legend class="form-header">How did you hear about us?</legend>
+            <label> <input type="checkbox" name="extras" value="conference">Conference</label>
+            <label> <input type="checkbox" name="extras" value="tv">TV</label>
+            <label> <input type="checkbox" name="extras" value="radio">Radio</label>
+            <label> <input type="checkbox" name="extras" value="word-of-mouth">Word of Mouth</label>
+            <label> <input type="checkbox" name="extras" value="other">Other</label>
+        </fieldset>
+
+        <fieldset id="comments">
+            <label for="comments">Comments</label>
+            <textarea name="comments" id="comments" maxlength="500"></textarea>
+        </fieldset>
+
+        <button class="btn" id="submit">Submit!</button>
+
+    </form>
+
+    <footer class="footer">
+        <div class="col">
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error consequatur adipisci et maxime. Dicta
+                autem, ullam dolorem recusandae ea officia consequuntur facilis deserunt laudantium quasi
+                voluptatem!
+                Labore eveniet dolores ab in laudantium recusandae. Assumenda tenetur architecto sapiente minima
+                saepe
+                aliquid natus porro possimus hic quam culpa, qui animi ipsum sit.</p>
+        </div>
+    </footer>
+
+    <!-- <script src="assets/javascript/test.js"></script> -->
+    <script src="assets/javascript/buttons.js"></script>
+</body>
+
+</html>

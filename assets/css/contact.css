@@ -1,0 +1,63 @@
+* {
+    box-sizing: border-box;
+  }
+
+  .myForm {
+    font-size: 1.2em;
+    font-family: 'Roboto Condensed', sans-serif;
+    display: grid;
+    grid-template-areas: 
+      "personal-info preferred-contact"
+      "personal-info extras"
+      "comments comments"
+      "submit submit";
+  	grid-template-columns: auto auto;  
+  	grid-template-rows: auto auto auto auto;
+    grid-gap: .8em .5em;
+    background: whitesmoke;
+    padding: 25px;
+  }
+  .myForm textarea {
+    height: calc(100% - 1.5em);
+    }
+  .myForm button {
+    width: 20%;
+    margin: 0 auto;
+    font-size: 1.2em;
+    border: solid black 2px;
+    }
+  .myForm input:not([type=radio]):not([type=checkbox]), 
+  .myForm textarea {
+   	width: 100%;
+    border: 0;
+    padding: 1.2em;
+    margin: .5em 0;
+  }
+
+  .myForm label {
+    color: black;
+    display: block; 
+  }
+
+  .form-header {
+      font-weight: bold;
+      margin-bottom: 10px;
+  }
+  fieldset {
+    border: 0;
+  }
+  #personal-info {
+    grid-area: personal-info;
+  }
+  #preferred-contact {
+    grid-area: preferred-contact;
+  }
+  #extras {
+    grid-area: extras;
+  }
+  #comments {
+    grid-area: comments;
+  }
+  #submit {
+    grid-area: submit;
+  }

@@ -1,0 +1,50 @@
+#banner {
+    background-color: white;
+    width: 100%;
+    height: auto;
+}
+
+#products h2 {
+    font-family: 'Roboto Condensed', sans-serif;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+#banner-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    position: relative;
+}
+
+#banner-div button {
+    z-index: 90;
+    border: solid black 4px;
+    opacity: .9;
+    
+}
+
+#banner-img {
+    width: 100%;
+    /* max-height: 500px; */
+    position: absolute;
+    opacity: .5;
+
+}
+
+@media (max-width: 800px) {
+
+    #banner-div button {
+        font-size: 1.5em;
+        border: solid black 2px;
+
+    }
+
+}
+

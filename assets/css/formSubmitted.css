@@ -1,0 +1,18 @@
+.submitted-msg {    
+    height: 600px;
+    background-image: linear-gradient(to bottom, white, black);
+    text-align: center;
+    position: relative;
+}
+
+.submitted-msg h2, p, i {
+    padding: 10px;
+    font-size: 2em;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: white;
+}
+
+.center {
+    position: relative;
+    top: 25%;
+}

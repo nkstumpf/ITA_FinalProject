@@ -4,24 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>web client test</title>
-</head>
-<body>
-
-    <h1>Web App Test</h1>
-
-    <button id="all">Show all</button>
-    <button id="snow">Show snow</button>
-    <button id="skate">Show skate</button>
-    <button id="surf">Show surf</button>
-    <button id="long">Show long</button>
-
-    <div id="content">
-        <!-- dynamic content -->
-    </div>
-
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="app.js"></script>
+    <!-- css -->
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/main.css">
     
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Liu+Jian+Mao+Cao|Roboto+Condensed|Staatliches&display=swap" rel="stylesheet">
+    <!-- font awesome icons -->
+    <script src="https://kit.fontawesome.com/4036413a70.js"></script>
+    <title>Home Page</title>
+</head>
+
+<body class="container">
+
+    <!-- flexbox header -->
+    
+    <header class="flex-container header">
+        <a href="index.html"><h1 id="logo">Nollie</h1></a>
+        <nav>
+            <ul class="flex-container nav">
+                <li><a href="./allProducts.html">Products</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- slider text -->
+
+    <section class="slider-wrapper">
+        <div id="slider-text">
+            <h2><span class="highlight">Winter 2020:</span> New. Merch. Is. In.</h2>
+            <button id="shopNowBtn" class="btn" type="button">Shop Now</button>
+        </div>
+
+    <!-- slider -->
+
+        <div class="slide-container">
+        <img class="mySlides" src="assets/images/bg-img.jpg" width="100%" alt="skateboarder riding away">
+        <img class="mySlides" src="assets/images/bg-img2.jpeg" width="100%" alt="skateboarder riding a vert ramp">
+        <img class="mySlides" src="assets/images/bg-img3.jpg" width="100%" alt="skateboarder doing a nose grind">
+        <button class="btn-display-left" onclick="plusDivs(-1)">&#10094;</button>
+        <button class="btn-display-right" onclick="plusDivs(1)">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- all products banner -->
+    
+    <section class="wrapper">
+        <div id="banner-div">
+            <button id="allProductsBtn" class="btn" type="button">Browse All Products</button>
+            <img id="banner-img" src="assets/images/longboards.png">
+        </div>
+    </section>
+
+    <!-- product categories grid -->
+
+    <section class="grid">
+
+        <a href="./allProducts.html">
+        <div class="grid-item">
+            <h4>Skateboards</h4>
+            <img class="grid-img" src="./assets/images/featured-skate.jpg" height="60%" alt="skateboard deck">
+        </div>
+        </a>
+
+        <a href="./allProducts.html">
+        <div class="grid-item">
+            <h4>Longboards</h4>
+            <img class="grid-img" src="./assets/images/featured-long.png" alt="longboard">
+        </div>
+        </a>
+
+        <a href="./allProducts.html">
+        <div class="grid-item">
+            <h4>Snowboards</h4>
+            <img class="grid-img" src="./assets/images/featured-snow.jpg" alt="snowboard">
+        </div>
+        </a>
+
+        <a href="./allProducts.html">
+        <div class="grid-item">
+            <h4>Surfboards</h4>
+            <img class="grid-img" src="./assets/images/featured-surf.jpg" alt="surfboard">
+        </div>
+        </a>
+
+    </section>
+
+    <!-- footer -->
+
+    <footer class="footer">
+        <div class="col flex-container">
+            <button id="contactBtn" class="btn" type="button"><i class="far fa-paper-plane"></i>Contact Us</button>
+        </div>
+        <div class="col">
+            <h6>About</h6>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error consequatur adipisci et maxime. Dicta autem, ullam dolorem recusandae ea officia consequuntur facilis deserunt laudantium quasi voluptatem! Labore eveniet dolores ab in laudantium recusandae. Assumenda tenetur architecto sapiente minima saepe aliquid natus porro possimus hic quam culpa, qui animi ipsum sit.</p>
+        </div>
+    </footer>
+
+    <script src="assets/javascript/slider.js"></script>
+    <script src="assets/javascript/buttons.js"></script>
+
 </body>
 </html>

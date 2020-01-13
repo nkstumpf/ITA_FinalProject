@@ -1,0 +1,50 @@
+.grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.grid-item {
+    background-color: white;
+    text-align: center;
+    border: dotted black 3px;
+    padding: 10px;
+    opacity: .8;
+}
+
+.grid-item:hover {
+    border: solid black 3px;
+    border-radius: 30px;
+    opacity: 1;
+
+}
+
+.grid-item h4 {
+    font-family: 'Liu Jian Mao Cao', cursive;
+    font-size: 3em;
+    padding: 10px;
+}
+
+.grid-img {
+    width: 50%;
+    height: auto;
+}
+
+@media (max-width: 800px) {
+    .grid {
+        display: block;
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+
+    .grid-item {
+        margin-bottom: 25px;
+    }
+
+    .grid-item h4 {
+        font-size: 2em;
+    }
+}

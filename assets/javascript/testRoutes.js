@@ -78,7 +78,16 @@ function generateHTML(response) {
 
     for(i=0; i < responseData.length; i++){
 
-        output += `${responseData[i].id} ${responseData[i].name} ${responseData[i].description} ${responseData[i].price}`; // add later: products[i].image, products[i].category
+        output += `
+        <a href="./productDetail.html">
+        <div class="flex-product">
+            <img class="product-thumbnail" src="./assets/images/featured-skate.jpg" height="60%"> 
+            <h4 class="product-name">${responseData[i].name}</h4>
+            <h5 class="product-price">$${responseData[i].price}</h5>
+            <p class="product-description">${responseData[i].description}</p>
+            <p class="sku">SKU#${responseData[i].id}</p>
+        </div>
+        </a>`; // add later: products[i].image, products[i].category
     }
 
     return  output

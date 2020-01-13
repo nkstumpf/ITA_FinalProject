@@ -1,0 +1,44 @@
+.header {
+    position: sticky;
+    top: 0;
+    padding: 10px;
+    background: white;
+    z-index: 100;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-family: 'Staatliches', cursive;
+    font-size: 3em;
+}
+
+.nav li {
+    padding: 5px;
+    margin: 0px 50px 0px 0px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 1.2em;
+}
+
+.nav li:hover {
+    border-bottom: solid black 1px;
+}
+
+/* for smaller screens */
+
+@media (max-width: 800px) {
+
+    .flex-container {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .nav li {
+        margin: 0;
+    }
+
+}
