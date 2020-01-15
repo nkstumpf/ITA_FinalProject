@@ -6,7 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- css -->
     <link rel="stylesheet" href="assets/css/reset.css">
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/slider.css">
+    <link rel="stylesheet" href="assets/css/banner.css">
+    <link rel="stylesheet" href="assets/css/featured.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
+    <link rel="stylesheet" href="assets/css/contact.css">
+    <link rel="stylesheet" href="assets/css/media.css">
+    <link rel="stylesheet" href="assets/css/allproducts.css">
+    <link rel="stylesheet" href="assets/css/productDetail.css">
     
     <!-- fonts -->
     <link href="https://fonts.googleapis.com/css?family=Liu+Jian+Mao+Cao|Roboto+Condensed|Staatliches&display=swap" rel="stylesheet">
@@ -15,7 +23,7 @@
     <title>Home Page</title>
 </head>
 
-<body class="container">
+<body id="body" class="container">
 
     <!-- flexbox header -->
     
@@ -23,7 +31,7 @@
         <a href="index.html"><h1 id="logo">Nollie</h1></a>
         <nav>
             <ul class="flex-container nav">
-                <li><a href="./allProducts.html">Products</a></li>
+                <li><a href="#" onclick="loadHTML('all')">Products</a></li>
                 <li><a href="./contact.html">Contact</a></li>
             </ul>
         </nav>
@@ -34,7 +42,7 @@
     <section class="slider-wrapper">
         <div id="slider-text">
             <h2><span class="highlight">Winter 2020:</span> New. Merch. Is. In.</h2>
-            <button id="shopNowBtn" class="btn" type="button">Shop Now</button>
+            <button class="btn" type="button" onclick="loadHTML('all')">Shop Now</button>
         </div>
 
     <!-- slider -->
@@ -52,7 +60,7 @@
     
     <section class="wrapper">
         <div id="banner-div">
-            <button id="allProductsBtn" class="btn" type="button">Browse All Products</button>
+            <button id="allProductsBtn" class="btn" type="button" onclick="loadHTML('all')">Browse All Products</button>
             <img id="banner-img" src="assets/images/longboards.png">
         </div>
     </section>
@@ -61,7 +69,7 @@
 
     <section class="grid">
 
-        <a href="./allProducts.html">
+        <a href="#" onclick="testFunc()">
         <div class="grid-item">
             <h4>Skateboards</h4>
             <img class="grid-img" src="./assets/images/featured-skate.jpg" height="60%" alt="skateboard deck">
@@ -104,7 +112,8 @@
     </footer>
 
     <script src="assets/javascript/slider.js"></script>
-    <script src="assets/javascript/buttons.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="assets/javascript/app.js"></script>
 
 </body>
 </html>
