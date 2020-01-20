@@ -7,8 +7,11 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
+	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -31,6 +34,16 @@ func enableCors(w *http.ResponseWriter) { // cross origin resource sharing
 
 // Structs (data structures model)
 
+// User : this is the correct format for  commment of of a struct
+type User struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Email       string `json:"email"`
+	Phone       int64  `json:"phone"`
+	PrefContact string `json:"pref_contact"`
+	ReferredBy  string `json:"referred_by"`
+}
+
 // Product : this is the correct format for  commment of of a struct
 type Product struct {
 	ID          string `json:"id"`
@@ -43,8 +56,62 @@ type Product struct {
 	ImgC        string `json:"img_c"`
 }
 
-// Initialize products variable as a slice of Product struct
-var products []Product
+// set new user function
+
+func setUser(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-Type", "application/json")
+
+	var user User
+
+	stmt, err := db.Prepare("INSERT INTO users (id, name, email, phone, pref_contact, referred_by) VALUES (?,?,?,?,?,?)")
+	if err != nil {
+		panic(err.Error())
+	}
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	json.Unmarshal(body, &user)
+
+	user.ID = strconv.Itoa(rand.Intn(10000000))
+
+	_, err = stmt.Exec(user.ID, user.Name, user.Email, user.Phone, user.PrefContact, user.ReferredBy)
+	if err != nil {
+		panic(err.Error())
+	}
+	fmt.Println("New user was created")
+
+	// w.Header().Set("Content-Type", "application/json")
+	// var user User
+	// // query := `INSERT INTO users (id, name, email, phone, pref_contact, referred_by)` // values (?,?,?,?,?,?,?,?,?)
+
+	// _ = json.NewDecoder(r.Body).Decode(&user)
+
+	// // create id for new book
+	// user.ID = strconv.Itoa(rand.Intn(10000000)) // not best practice just an example
+	// json.NewEncoder(w).Encode(user)
+
+	// res, err := db.Exec(query, user.Name, user.Email, user.Phone, user.PrefContact, user.ReferredBy)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
+
+	// id, err := res.LastInsertId()
+
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	return
+	// }
+
+	// user.ID = id
+
+	// w.WriteHeader(http.StatusCreated)
+	// json.NewEncoder(w).Encode(user)
+
+}
 
 // Get all products function
 func getProducts(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +119,7 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 	// set header content type
 	w.Header().Set("Content-Type", "application/json")
 
-	// set structure of what we are going to return
+	// Initialize the data structure we will return
 	products := []Product{}
 
 	// set the query we send to db
@@ -86,16 +153,45 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 
 	// let the client know the request worked
 	w.WriteHeader(http.StatusOK)
-	// let header know it's in a json
-	w.Header().Set("Content-Type", "application/json")
 
 	// return this via json data
 	json.NewEncoder(w).Encode(products)
 
 }
 
-// Get single product function
+// Get all products from a specific category function
+func getCategory(w http.ResponseWriter, r *http.Request) {
 
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	productCategory := params["category"]
+	products := []Product{}
+	query := "SELECT * FROM products WHERE category = ?"
+	enableCors(&w)
+
+	rows, err := db.Query(query, productCategory)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	for rows.Next() {
+		var product Product
+		err := rows.Scan(&product.ID, &product.Category, &product.Name, &product.Description, &product.Price, &product.ImgMain, &product.ImgB, &product.ImgC)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		products = append(products, product)
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(products)
+
+}
+
+// Get single product function
 func getProduct(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
@@ -143,22 +239,22 @@ func main() {
 
 	// testing only //
 	//////////////////
-	results, err := database.Query("SELECT * FROM products")
-	if err != nil {
-		panic(err.Error())
-	}
+	// results, err := database.Query("SELECT * FROM products")
+	// if err != nil {
+	// 	panic(err.Error())
+	// }
 
-	for results.Next() {
-		var product Product
+	// for results.Next() {
+	// 	var product Product
 
-		err = results.Scan(&product.ID, &product.Category, &product.Name, &product.Description, &product.Price, &product.ImgMain, &product.ImgB, &product.ImgC)
+	// 	err = results.Scan(&product.ID, &product.Category, &product.Name, &product.Description, &product.Price, &product.ImgMain, &product.ImgB, &product.ImgC)
 
-		if err != nil {
-			panic(err.Error())
-		}
+	// 	if err != nil {
+	// 		panic(err.Error())
+	// 	}
 
-		fmt.Println(product)
-	}
+	// 	fmt.Println(product)
+	// }
 	////////////////////
 	////////////////////
 
@@ -168,8 +264,10 @@ func main() {
 
 	// Create route handler - Sets our URL endpoints
 
-	router.HandleFunc("/products", getProducts).Methods("GET")     // get all products
-	router.HandleFunc("/products/{id}", getProduct).Methods("GET") // get single product
+	router.HandleFunc("/products", getProducts).Methods("GET")            // get all products
+	router.HandleFunc("/products/{id}", getProduct).Methods("GET")        // get single product
+	router.HandleFunc("/products/{category}", getCategory).Methods("GET") // get single category of products
+	router.HandleFunc("/users", setUser).Methods("POST")                  // post a users info to the db
 
 	//  Run server
 

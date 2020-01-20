@@ -42,7 +42,14 @@ function getProducts(param) {
             content.innerHTML = generateResponse(response, 'all');
 
         });
-    } else if (param === 'category') {
+    } else {
+
+        axios.get('http://localhost:8000/products/' + param)
+        // response 
+        .then((response) => {
+            content.innerHTML = generateResponse(response, 'all');
+
+        });
 
     }
 
