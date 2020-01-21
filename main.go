@@ -9,9 +9,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
-	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -74,8 +72,6 @@ func setUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.Unmarshal(body, &user)
-
-	user.ID = strconv.Itoa(rand.Intn(10000000))
 
 	_, err = stmt.Exec(user.ID, user.Name, user.Email, user.Phone, user.PrefContact, user.ReferredBy)
 	if err != nil {
@@ -161,7 +157,6 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 
 // Get all products from a specific category function
 func getCategory(w http.ResponseWriter, r *http.Request) {
-
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	productCategory := params["category"]
@@ -264,10 +259,10 @@ func main() {
 
 	// Create route handler - Sets our URL endpoints
 
-	router.HandleFunc("/products", getProducts).Methods("GET")            // get all products
-	router.HandleFunc("/products/{id}", getProduct).Methods("GET")        // get single product
-	router.HandleFunc("/products/{category}", getCategory).Methods("GET") // get single category of products
-	router.HandleFunc("/users", setUser).Methods("POST")                  // post a users info to the db
+	router.HandleFunc("/products", getProducts).Methods("GET")                 // get all products
+	router.HandleFunc("/products/{id}", getProduct).Methods("GET")             // get single product
+	router.HandleFunc("/products/sort/{category}", getCategory).Methods("GET") // get single category of products
+	router.HandleFunc("/users", setUser).Methods("POST")                       // post a users info to the db
 
 	//  Run server
 
