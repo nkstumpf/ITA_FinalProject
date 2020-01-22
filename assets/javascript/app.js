@@ -42,12 +42,39 @@ function getProducts(param) {
             content.innerHTML = generateResponse(response, 'all');
 
         });
-    } else {
+    } else if (param === 'longboards') {
 
-        axios.get('http://localhost:8000/products/' + param)
+        axios.get('http://localhost:8000/products/sort/' + param)
         // response 
         .then((response) => {
-            content.innerHTML = generateResponse(response, 'all');
+            content.innerHTML = generateResponse(response, 'longboards');
+
+        });
+
+    } else if (param === 'skateboards') {
+
+        axios.get('http://localhost:8000/products/sort/' + param)
+        // response 
+        .then((response) => {
+            content.innerHTML = generateResponse(response, 'skateboards');
+
+        });
+
+    } else if (param === 'snowboards') {
+
+        axios.get('http://localhost:8000/products/sort/' + param)
+        // response 
+        .then((response) => {
+            content.innerHTML = generateResponse(response, 'snowboards');
+
+        });
+
+    } else if (param === 'surfboards') {
+
+        axios.get('http://localhost:8000/products/sort/' + param)
+        // response 
+        .then((response) => {
+            content.innerHTML = generateResponse(response, 'surfboards');
 
         });
 
@@ -56,8 +83,6 @@ function getProducts(param) {
 }
 
 function loadHTML(param) {
-
-    if (param === 'all') {
 
         body.innerHTML = `
         
@@ -86,10 +111,10 @@ function loadHTML(param) {
         </div>
 
         <div class="flex-container">
-            <button id="skate" class="btn" type="button">Skateboards</button>
-            <button id="long" class="btn" type="button">Longboards</button>
-            <button id="snow" class="btn" type="button">Snowboards</button>
-            <button id="surf" class="btn" type="button">Surfboards</button>
+            <button id="skate" class="btn" type="button" onclick="loadHTML('skateboards')">Skateboards</button>
+            <button id="long" class="btn" type="button" onclick="loadHTML('longboards')">Longboards</button>
+            <button id="snow" class="btn" type="button" onclick="loadHTML('snowboards')">Snowboards</button>
+            <button id="surf" class="btn" type="button" onclick="loadHTML('surfboards')">Surfboards</button>
         </div>
         
         <div class="searchbar-container">
@@ -115,11 +140,32 @@ function loadHTML(param) {
             </div>
         </footer>`;
 
-        getProducts('all');
+        if (param === 'all') {
 
-    } else if (param === 'category') {
-        // load product category
-    }
+            // load all products
+            getProducts('all');
+
+        } else if (param === 'longboards') {
+
+            // load all longboards
+            getProducts('longboards');
+
+        } else if (param === 'skateboards') {
+
+            // load all skateboards
+            getProducts('skateboards');
+
+        } else if (param === 'snowboards') {
+
+            // load all snowboards
+            getProducts('snowboards');
+
+        } else if (param === 'surfboards') {
+
+            // load all surfboards
+            getProducts('surfboards');
+
+        }
 
 }
 
@@ -128,7 +174,7 @@ function generateResponse(response, param) {
     var responseData = response.data;
     var output = '';
 
-    if (param === 'all') {
+    if (param === 'all' || 'longboards' || 'skateboards' || 'snowboards' || 'surfboards') {
 
         for (i = 0; i < responseData.length; i++) {
 
