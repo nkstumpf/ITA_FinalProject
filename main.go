@@ -34,8 +34,8 @@ func enableCors(w *http.ResponseWriter) { // cross origin resource sharing
 
 // User : this is the correct format for  commment of of a struct
 type User struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
+	FirstName   string `json:"firstname"`
+	LastName    string `json:"lastname"`
 	Email       string `json:"email"`
 	Phone       int64  `json:"phone"`
 	PrefContact string `json:"pref_contact"`
@@ -60,9 +60,13 @@ func setUser(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
+	enableCors(&w)
+
 	var user User
 
-	stmt, err := db.Prepare("INSERT INTO users (id, name, email, phone, pref_contact, referred_by) VALUES (?,?,?,?,?,?)")
+	json.NewDecoder(r.Body).Decode(&user)
+
+	stmt, err := db.Prepare("INSERT INTO users (firstname, lastname, email, phone, pref_contact, referred_by) VALUES (?,?,?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -73,41 +77,44 @@ func setUser(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(body, &user)
 
-	_, err = stmt.Exec(user.ID, user.Name, user.Email, user.Phone, user.PrefContact, user.ReferredBy)
+	_, err = stmt.Exec(user.FirstName, user.LastName, user.Email, user.Phone, user.PrefContact, user.ReferredBy)
 	if err != nil {
 		panic(err.Error())
 	}
 	fmt.Println("New user was created")
 
-	// w.Header().Set("Content-Type", "application/json")
-	// var user User
-	// // query := `INSERT INTO users (id, name, email, phone, pref_contact, referred_by)` // values (?,?,?,?,?,?,?,?,?)
-
-	// _ = json.NewDecoder(r.Body).Decode(&user)
-
-	// // create id for new book
-	// user.ID = strconv.Itoa(rand.Intn(10000000)) // not best practice just an example
-	// json.NewEncoder(w).Encode(user)
-
-	// res, err := db.Exec(query, user.Name, user.Email, user.Phone, user.PrefContact, user.ReferredBy)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-
-	// id, err := res.LastInsertId()
-
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return
-	// }
-
-	// user.ID = id
-
-	// w.WriteHeader(http.StatusCreated)
-	// json.NewEncoder(w).Encode(user)
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(user)
 
 }
+
+// w.Header().Set("Content-Type", "application/json")
+// var user User
+// // query := `INSERT INTO users (id, name, email, phone, pref_contact, referred_by)` // values (?,?,?,?,?,?,?,?,?)
+
+// _ = json.NewDecoder(r.Body).Decode(&user)
+
+// // create id for new book
+// user.ID = strconv.Itoa(rand.Intn(10000000)) // not best practice just an example
+// json.NewEncoder(w).Encode(user)
+
+// res, err := db.Exec(query, user.Name, user.Email, user.Phone, user.PrefContact, user.ReferredBy)
+// if err != nil {
+// 	fmt.Println(err)
+// 	return
+// }
+
+// id, err := res.LastInsertId()
+
+// if err != nil {
+// 	fmt.Println(err)
+// 	return
+// }
+
+// user.ID = id
+
+// w.WriteHeader(http.StatusCreated)
+// json.NewEncoder(w).Encode(user)
 
 // Get all products function
 func getProducts(w http.ResponseWriter, r *http.Request) {

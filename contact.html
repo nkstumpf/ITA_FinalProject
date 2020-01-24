@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="assets/css/contact.css">
     <link rel="stylesheet" href="assets/css/media.css">
     <link rel="stylesheet" href="assets/css/allproducts.css">
+    <link rel="stylesheet" href="assets/css/formSubmitted.css">
 
     <!-- fonts -->
     <link href="https://fonts.googleapis.com/css?family=Liu+Jian+Mao+Cao|Roboto+Condensed|Staatliches&display=swap"
@@ -24,7 +25,7 @@
     <title>Contact Page</title>
 </head>
 
-<body class="container">
+<body id="body" class="container">
     <!-- flexbox header -->
     <header class="flex-container header">
         <a href="index.html"><h1 id="logo">Nollie</h1></a>
@@ -40,40 +41,49 @@
         <h2>Contact Us!</h2>
     </div>
 
-    <form class="myForm" action="./formSubmitted.html" method="get">
-        <fieldset id="personal-info">
-            <label for="customer_name">Name</label>
-            <input type="text" name="customer_name" id="customer_name" required>
+    <!-- <form class="myForm" action="formSubmitted.html" method="post"> -->
 
-            <label for="phone_number">Phone </label>
-            <input type="tel" name="phone_number" id="phone_number" required>
+        <div class="myForm">
 
-            <label for="email_address">Email </label>
-            <input type="email" name="email_address" id="email_address" required>
-        </fieldset>
-        <fieldset id="preferred-contact">
-            <legend class="form-header">Preferred contact method:</legend>
-            <label> <input type="radio" name="contact" id="phone_btn" required value="phone">Phone</label>
-            <label> <input type="radio" name="contact" id="email_btn" required value="email">Email</label>
-        </fieldset>
+            <fieldset id="personal-info">
+                <label for="customer_name">First Name</label>
+                <input type="text" name="customer_name" id="customer-firstname" required>
 
-        <fieldset id="extras">
-            <legend class="form-header">How did you hear about us?</legend>
-            <label> <input type="checkbox" name="extras" value="conference">Conference</label>
-            <label> <input type="checkbox" name="extras" value="tv">TV</label>
-            <label> <input type="checkbox" name="extras" value="radio">Radio</label>
-            <label> <input type="checkbox" name="extras" value="word-of-mouth">Word of Mouth</label>
-            <label> <input type="checkbox" name="extras" value="other">Other</label>
-        </fieldset>
+                <label for="customer_name">Last Name</label>
+                <input type="text" name="customer_name" id="customer-lastname" required>
 
-        <fieldset id="comments">
+                <label for="email_address">Email </label>
+                <input type="email" name="email_address" id="customer-email" required>
+
+                <label for="phone_number">Phone</label>
+                <input type="tel" name="phone_number" id="customer-phone" required>
+
+            </fieldset>
+            <fieldset id="preferred-contact">
+                <legend class="form-header">Preferred contact method:</legend>
+                <label> <input type="radio" name="contact" id="phone-btn" value="phone" required>Phone</label>
+                <label> <input type="radio" name="contact" id="email-btn" value="email" required>Email</label>
+            </fieldset>
+
+            <fieldset id="extras">
+                <legend class="form-header">How did you hear about us?</legend>
+                <label> <input type="checkbox" name="extras" value="conference" id="conf-btn">Conference</label>
+                <label> <input type="checkbox" name="extras" value="tv" id="tv-btn">TV</label>
+                <label> <input type="checkbox" name="extras" value="radio" id="radio-btn">Radio</label>
+                <label> <input type="checkbox" name="extras" value="word-of-mouth" id="wom-btn">Word of Mouth</label>
+                <label> <input type="checkbox" name="extras" value="other" id="other-btn">Other</label>
+            </fieldset>
+
+            <!-- <fieldset id="comments">
             <label for="comments">Comments</label>
             <textarea name="comments" id="comments" maxlength="500"></textarea>
-        </fieldset>
+            </fieldset> -->
 
-        <button class="btn" id="submit">Submit!</button>
+        </div>
 
-    </form>
+        <button class="btn" id="submit" method="post" onclick="postContact()">Submit!</button>
+
+    <!-- </form> -->
 
     <footer class="footer">
         <div class="col">
@@ -86,8 +96,8 @@
         </div>
     </footer>
 
-    <!-- <script src="assets/javascript/test.js"></script> -->
-    <script src="assets/javascript/buttons.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="assets/javascript/app.js"></script>
 </body>
 
 </html>

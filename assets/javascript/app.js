@@ -14,6 +14,73 @@ body = document.getElementById('body');
 
 // axios 
 
+function postContact() {
+
+    // variables to store our user inputs
+
+    var firstNameVal = document.getElementById('customer-firstname').value;
+    var lastNameVal = document.getElementById('customer-lastname').value;
+    var emailVal = document.getElementById('customer-email').value;
+    var phoneVal = document.getElementById('customer-phone').value;
+    var prefContactVal, refByVal;
+
+
+    // figure out which radio option the user selected
+    if (document.getElementById('phone-btn').checked) {
+        prefContactVal = document.getElementById('phone-btn').value;
+      } else if (document.getElementById('email-btn').checked) {
+        prefContactVal = document.getElementById('email-btn').value;
+    };
+
+    // figure out which checkbox option the user selected
+    if (document.getElementById('conf-btn').checked) {
+      refByVal = document.getElementById('conf-btn').value;
+    } else if (document.getElementById('tv-btn').checked) {
+      refByVal = document.getElementById('tv-btn').value;
+    } else if (document.getElementById('radio-btn').checked) {
+        refByVal = document.getElementById('radio-btn').value;
+    } else if (document.getElementById('wom-btn').checked) {
+        refByVal = document.getElementById('wom-btn').value;
+    } else if (document.getElementById('other-btn').checked) {
+        refByVal = document.getElementById('other-btn').value;
+    };
+
+    // our user object
+    var user = {
+        firstName: firstNameVal,
+        lastName: lastNameVal,
+        email: emailVal,
+        phone: phoneVal,
+        pref_contact: prefContactVal,
+	    referred_by:  refByVal
+        };
+
+    // format our user object into JSON
+    JSONUser = JSON.stringify(user);
+
+    // check our inputs
+    console.log(prefContactVal);
+    console.log(refByVal);
+    console.log(JSONUser);
+
+    // our post request
+    fetch('http://localhost:8000/users', {
+        mode: 'no-cors',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+        },
+
+        body: JSONUser
+    })
+
+        .then((data) => {
+        body.innerHTML = generateResponse(data, 'post');
+        // console.log(data);
+    })
+
+}
+
 function getProduct(id) {
 
     console.log('view product was clicked');
@@ -165,7 +232,7 @@ function loadHTML(param) {
             // load all surfboards
             getProducts('surfboards');
 
-        }
+        } 
 
 }
 
@@ -174,7 +241,9 @@ function generateResponse(response, param) {
     var responseData = response.data;
     var output = '';
 
-    if (param === 'all' || 'longboards' || 'skateboards' || 'snowboards' || 'surfboards') {
+    if (param === 'all') {
+
+        console.log('all block entered');
 
         for (i = 0; i < responseData.length; i++) {
 
@@ -190,7 +259,81 @@ function generateResponse(response, param) {
 
         }
 
+    } else if (param === 'longboards') {
+
+        console.log('longboards block entered');
+
+        for (i = 0; i < responseData.length; i++) {
+
+            output += `
+
+            <div class="flex-product">
+            <img class="product-thumbnail" src="./${responseData[i].img_main}" height="60%"> 
+            <h4 class="product-name">${responseData[i].name}</h4>
+            <h5 class="product-price">$${responseData[i].price}</h5>
+            <p class="product-description">${responseData[i].description}</p>
+            <button class="sku" onclick="getProduct(${responseData[i].id})">View!</button>
+            </div>`;
+
+        } 
+    
+    } else if (param === 'skateboards') {
+
+        console.log('skateboards block entered');
+
+        for (i = 0; i < responseData.length; i++) {
+
+            output += `
+
+            <div class="flex-product">
+            <img class="product-thumbnail" src="./${responseData[i].img_main}" height="60%"> 
+            <h4 class="product-name">${responseData[i].name}</h4>
+            <h5 class="product-price">$${responseData[i].price}</h5>
+            <p class="product-description">${responseData[i].description}</p>
+            <button class="sku" onclick="getProduct(${responseData[i].id})">View!</button>
+            </div>`;
+
+        } 
+
+    } else if (param === 'snowboards') {
+
+        console.log('snowboardsboards block entered');
+
+        for (i = 0; i < responseData.length; i++) {
+
+            output += `
+
+            <div class="flex-product">
+            <img class="product-thumbnail" src="./${responseData[i].img_main}" height="60%"> 
+            <h4 class="product-name">${responseData[i].name}</h4>
+            <h5 class="product-price">$${responseData[i].price}</h5>
+            <p class="product-description">${responseData[i].description}</p>
+            <button class="sku" onclick="getProduct(${responseData[i].id})">View!</button>
+            </div>`;
+
+        } 
+
+    } else if (param === 'surfboards') {
+
+        console.log('surfboards block entered');
+
+        for (i = 0; i < responseData.length; i++) {
+
+            output += `
+
+            <div class="flex-product">
+            <img class="product-thumbnail" src="./${responseData[i].img_main}" height="60%"> 
+            <h4 class="product-name">${responseData[i].name}</h4>
+            <h5 class="product-price">$${responseData[i].price}</h5>
+            <p class="product-description">${responseData[i].description}</p>
+            <button class="sku" onclick="getProduct(${responseData[i].id})">View!</button>
+            </div>`;
+
+        } 
+
     } else if (param === 'single') {
+
+        console.log('single block entered');
 
         output += `
 
@@ -248,8 +391,42 @@ function generateResponse(response, param) {
                 <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error consequatur adipisci et maxime. Dicta autem, ullam dolorem recusandae ea officia consequuntur facilis deserunt laudantium quasi voluptatem! Labore eveniet dolores ab in laudantium recusandae. Assumenda tenetur architecto sapiente minima saepe aliquid natus porro possimus hic quam culpa, qui animi ipsum sit.</p>
             </div>
         </footer>
-        <script src="assets/javascript/buttons.js"></script>
-        <script src="assets/javascript/testRoutes.js"></script>`;
+        <script src="assets/javascript/app.js"></script>`;
+
+    } else if (param === 'post') {
+
+        output += `
+
+        <header class="flex-container header">
+            <a href="index.html"><h1 id="logo">Nollie</h1></a>
+            <nav>
+                <ul class="flex-container nav">
+                    <li><a href="#" onclick="loadHTML('all')">Products</a></li>
+                    <li><a href="./contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="submitted-msg">
+        <div class="center">
+            <i class="fas fa-mountain"></i>
+            <h2>Thanks for reaching out!</h2>
+            <p>Someone from our staff will be in touch soon.</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+            <div class="col">
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error consequatur adipisci et maxime. Dicta
+                    autem, ullam dolorem recusandae ea officia consequuntur facilis deserunt laudantium quasi
+                    voluptatem!
+                    Labore eveniet dolores ab in laudantium recusandae. Assumenda tenetur architecto sapiente minima
+                    saepe
+                    aliquid natus porro possimus hic quam culpa, qui animi ipsum sit.</p>
+            </div>
+    </footer>
+    <script src="assets/javascript/app.js"></script>`
+    
     }
 
     return output;
