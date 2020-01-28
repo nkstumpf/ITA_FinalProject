@@ -8,7 +8,7 @@ services:
     # Configuration for building the docker image for the backend service
     container_name: project-api
     build:
-      context: api/ # Either a path to a directory containing a Dockerfile, or a url to a git repository
+      context: api # Either a path to a directory containing a Dockerfile, or a url to a git repository
       dockerfile: Dockerfile
     ports:
       - "8080:8080" # Forward the exposed port 8000 on the container to port 8000 on the host machine
@@ -16,14 +16,14 @@ services:
     depends_on: 
       - database # Starts mysql db first
     networks:
-      - frontend
       - backend
+    tty: true
 
   # App frontend service
   webclient:
     container_name: project-webclient
     build:
-      context: webclient/
+      context: webclient
       dockerfile: Dockerfile
     ports:
       - "80:80"
@@ -32,29 +32,25 @@ services:
       - database
       - api
     networks:
-      - frontend
+      - backend
+    tty: true
 
   # Database Service
   database:
+    environment: 
+      MYSQL_DATABASE: project_db
+      MYSQL_ROOT_PASSWORD: password
     container_name: project-database
-    image: mysql:5.7
     ports:
       - "3306:3306"
     restart: always
     build:
-      context: database/
+      context: database
       dockerfile: Dockerfile
-    environment: 
-      MYSQL_DATABASE: project_db
-      MYSQL_ROOT_PASSWORD: password
     networks:
       - backend
-
-# Volumes
-volumes:
-  db-data:
+    tty: true
 
 # Networks to be created to facilitate communication between containers
 networks:
   backend:
-  frontend:

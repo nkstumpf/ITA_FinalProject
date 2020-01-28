@@ -227,7 +227,7 @@ func main() {
 	fmt.Println("Testing MySQL connection...")
 
 	// For mySQL driver import:
-	database, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/products_db") // Always use a fake password here
+	database, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/project_db") // Always use a fake password here
 
 	db = database
 

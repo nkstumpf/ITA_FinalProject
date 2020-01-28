@@ -17,3 +17,6 @@ TODO:
     14.[X] Update front end- restructure for more streamlined SPA style design
     15.[] Fix footer link to contact page
     16.[X] Docker!
+    17.[] Troubleshoot CSS filepaths in docker container
+    18.[] Troubleshoot mysql password issue (.env file?)
+    19.[] Review code and add notes/comments for final presentation

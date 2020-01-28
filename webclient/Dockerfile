@@ -1,2 +1,2 @@
-FROM nginx:alpine
-COPY . /usr/share/nginx/webclient
+FROM nginx
+COPY . /usr/share/nginx/html
