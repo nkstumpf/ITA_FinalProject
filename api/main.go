@@ -20,7 +20,7 @@ import (
 // point to db
 // this will use listen and serve
 
-var port = "8000"
+var port = "8080"
 
 // use pointer here. otherwise go will open a COPY of the database every time
 var db *sql.DB
@@ -273,6 +273,6 @@ func main() {
 
 	//  Run server
 
-	log.Fatal(http.ListenAndServe(":8000", router)) // specify port and router variable
+	log.Fatal(http.ListenAndServe(":8080", router)) // specify port and router variable
 
 }

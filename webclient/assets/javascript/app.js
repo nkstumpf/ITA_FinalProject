@@ -64,7 +64,7 @@ function postContact() {
     console.log(JSONUser);
 
     // our post request
-    fetch('http://localhost:8000/users', {
+    fetch('http://localhost:8080/users', {
         mode: 'no-cors',
         method: 'POST',
         headers: {
@@ -87,7 +87,7 @@ function getProduct(id) {
 
     // get single produc
     // query api
-    axios.get('http://localhost:8000/products/' + id)
+    axios.get('http://localhost:8080/products/' + id)
         // response 
         .then((response) => {
             body.innerHTML = generateResponse(response, 'single');
@@ -103,7 +103,7 @@ function getProducts(param) {
     // get all products
 
     // query api
-    axios.get('http://localhost:8000/products')
+    axios.get('http://localhost:8080/products')
         // response 
         .then((response) => {
             content.innerHTML = generateResponse(response, 'all');
@@ -111,7 +111,7 @@ function getProducts(param) {
         });
     } else if (param === 'longboards') {
 
-        axios.get('http://localhost:8000/products/sort/' + param)
+        axios.get('http://localhost:8080/products/sort/' + param)
         // response 
         .then((response) => {
             content.innerHTML = generateResponse(response, 'longboards');
@@ -120,7 +120,7 @@ function getProducts(param) {
 
     } else if (param === 'skateboards') {
 
-        axios.get('http://localhost:8000/products/sort/' + param)
+        axios.get('http://localhost:8080/products/sort/' + param)
         // response 
         .then((response) => {
             content.innerHTML = generateResponse(response, 'skateboards');
@@ -129,7 +129,7 @@ function getProducts(param) {
 
     } else if (param === 'snowboards') {
 
-        axios.get('http://localhost:8000/products/sort/' + param)
+        axios.get('http://localhost:8080/products/sort/' + param)
         // response 
         .then((response) => {
             content.innerHTML = generateResponse(response, 'snowboards');
@@ -138,7 +138,7 @@ function getProducts(param) {
 
     } else if (param === 'surfboards') {
 
-        axios.get('http://localhost:8000/products/sort/' + param)
+        axios.get('http://localhost:8080/products/sort/' + param)
         // response 
         .then((response) => {
             content.innerHTML = generateResponse(response, 'surfboards');

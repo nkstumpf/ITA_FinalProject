@@ -16,4 +16,4 @@ TODO:
     13.[] Fix styling on "view" buttons
     14.[X] Update front end- restructure for more streamlined SPA style design
     15.[] Fix footer link to contact page
-    16.[] Docker!
+    16.[X] Docker!
