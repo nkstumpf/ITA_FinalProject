@@ -43,9 +43,10 @@ type User struct {
 	FirstName   string `json:"firstname"`
 	LastName    string `json:"lastname"`
 	Email       string `json:"email"`
-	Phone       int64  `json:"phone"`
+	Phone       string `json:"phone"`
 	PrefContact string `json:"pref_contact"`
 	ReferredBy  string `json:"referred_by"`
+	Comments    string `json:"comments"`
 }
 
 // Product : this is the correct format for  commment of of a struct
@@ -103,7 +104,7 @@ func setUser(w http.ResponseWriter, r *http.Request) {
 
 	json.NewDecoder(r.Body).Decode(&user)
 
-	stmt, err := db.Prepare("INSERT INTO users (firstname, lastname, email, phone, pref_contact, referred_by) VALUES (?,?,?,?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO users (firstname, lastname, email, phone, pref_contact, referred_by, comments) VALUES (?,?,?,?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -114,13 +115,13 @@ func setUser(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(body, &user)
 
-	_, err = stmt.Exec(user.FirstName, user.LastName, user.Email, user.Phone, user.PrefContact, user.ReferredBy)
+	_, err = stmt.Exec(user.FirstName, user.LastName, user.Email, user.Phone, user.PrefContact, user.ReferredBy, user.Comments)
 	if err != nil {
 		panic(err.Error())
 	}
 	fmt.Println("New user was created")
 
-	w.WriteHeader(http.StatusBadGateway)
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(user)
 
 }

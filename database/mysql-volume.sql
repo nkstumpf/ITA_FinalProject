@@ -6,9 +6,10 @@ CREATE TABLE users (
     firstname VARCHAR(30) NOT NULL DEFAULT '',
     lastname VARCHAR(30) NOT NULL DEFAULT '',
     email VARCHAR(30) NOT NULL DEFAULT '',
-    phone BIGINT(30),
+    phone VARCHAR(30) NOT NULL DEFAULT '',
     pref_contact VARCHAR(30) NOT NULL DEFAULT '',
-    referred_by VARCHAR(30) NOT NULL DEFAULT ''
+    referred_by VARCHAR(100) NOT NULL DEFAULT '',
+    comments VARCHAR(240) NOT NULL DEFAULT ''
 ) ENGINE=INNODB DEFAULT CHARSET=LATIN1;
 
 CREATE TABLE products (

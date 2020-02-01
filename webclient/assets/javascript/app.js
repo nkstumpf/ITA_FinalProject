@@ -18,8 +18,15 @@ async function postContact() {
   var firstNameVal = document.getElementById("customer-firstname").value;
   var lastNameVal = document.getElementById("customer-lastname").value;
   var emailVal = document.getElementById("customer-email").value;
-  var phoneVal = document.getElementById("customer-phone").value;
-  var prefContactVal, refByVal;
+  var commentsVal = document.getElementById("customer-comments").value;
+  var phoneVal, prefContactVal, refByVal;
+
+  // collect and format phone number for db
+  var phoneA = document.getElementById("customer-phone-a").value;
+  var phoneB = document.getElementById("customer-phone-b").value;
+  var phoneC = document.getElementById("customer-phone-c").value;
+
+  phoneVal = "(" + phoneA + ")" + " " + phoneB + "-" + phoneC;
 
   // figure out which radio option the user selected
   if (document.getElementById("phone-btn").checked) {
@@ -28,24 +35,26 @@ async function postContact() {
     prefContactVal = document.getElementById("email-btn").value;
   }
 
-  // figure out which checkbox option the user selected
-  if (document.getElementById("conf-btn").checked) {
-    refByVal = document.getElementById("conf-btn").value;
-  } else if (document.getElementById("tv-btn").checked) {
-    refByVal = document.getElementById("tv-btn").value;
-  } else if (document.getElementById("radio-btn").checked) {
-    refByVal = document.getElementById("radio-btn").value;
-  } else if (document.getElementById("wom-btn").checked) {
-    refByVal = document.getElementById("wom-btn").value;
-  } else if (document.getElementById("other-btn").checked) {
-    refByVal = document.getElementById("other-btn").value;
+  //   find out which checkboxes the user selected
+  var checkboxes = [];
+
+  checkboxes.push(document.getElementById("conf-btn"));
+  checkboxes.push(document.getElementById("tv-btn"));
+  checkboxes.push(document.getElementById("radio-btn"));
+  checkboxes.push(document.getElementById("wom-btn"));
+  checkboxes.push(document.getElementById("other-btn"));
+
+  var selection = [];
+
+  for (i = 0; i < checkboxes.length; i++) {
+    if (checkboxes[i].checked) {
+      selection.push(checkboxes[i].value);
+    }
   }
 
-  // check which boxes are checked.
-  // push to arr
-  // convert arr to string
-  // save to var
-  // push to db
+  console.log(selection);
+
+  refByVal = selection.toString();
 
   // our user object
   var user = {
@@ -54,7 +63,8 @@ async function postContact() {
     email: emailVal,
     phone: phoneVal,
     pref_contact: prefContactVal,
-    referred_by: refByVal
+    referred_by: refByVal,
+    comments: commentsVal
   };
 
   // format our user object into JSON
@@ -212,7 +222,11 @@ function loadHTML(param) {
 
         <footer class="footer">
             <div class="col flex-container">
-                <button id="contactBtn" class="btn" type="button"><i class="far fa-paper-plane"></i>Contact Us</button>
+            <a href="./contact.html"
+            ><button id="contactBtn" class="btn" type="button">
+              <i class="far fa-paper-plane"></i>Contact Us
+            </button></a
+          >
             </div>
             <div class="col">
                 <h6 id="about">About</h6>
@@ -365,7 +379,11 @@ function generateResponse(response, param) {
 
         <footer class="footer">
             <div class="col flex-container">
-                <button id="contactBtn" class="btn"><i class="far fa-paper-plane"></i>Contact Us</button>
+            <a href="./contact.html"
+            ><button id="contactBtn" class="btn" type="button">
+              <i class="far fa-paper-plane"></i>Contact Us
+            </button></a
+          >
             </div>
             <div class="col">
                 <h6>About</h6>
