@@ -6,7 +6,7 @@ CREATE TABLE users (
     firstname VARCHAR(30) NOT NULL DEFAULT '',
     lastname VARCHAR(30) NOT NULL DEFAULT '',
     email VARCHAR(30) NOT NULL DEFAULT '',
-    phone BIGINT(30) NOT NULL DEFAULT 0,
+    phone BIGINT(30),
     pref_contact VARCHAR(30) NOT NULL DEFAULT '',
     referred_by VARCHAR(30) NOT NULL DEFAULT ''
 ) ENGINE=INNODB DEFAULT CHARSET=LATIN1;
@@ -21,6 +21,11 @@ CREATE TABLE products (
     img_b VARCHAR(255),
     img_c VARCHAR(255)
 ) ENGINE=INNODB DEFAULT CHARSET=LATIN1;
+
+CREATE TABLE errors (
+    error_code VARCHAR(3),
+	response_msg VARCHAR(255)
+) ENGINE=INNODB DEFAULT CHARSET=LATIN1;;
 
 
 INSERT INTO products (id, category, name, description, price, img_main, img_b, img_c) 

@@ -32,6 +32,12 @@ func enableCors(w *http.ResponseWriter) { // cross origin resource sharing
 
 // Structs (data structures model)
 
+// ErrorLog : this is the correct format for  commment of of a struct
+type ErrorLog struct {
+	ErrorCode   string `json:"error_code"`
+	ResponseMsg string `json:"response_msg"`
+}
+
 // User : this is the correct format for  commment of of a struct
 type User struct {
 	FirstName   string `json:"firstname"`
@@ -52,6 +58,37 @@ type Product struct {
 	ImgMain     string `json:"img_main"`
 	ImgB        string `json:"img_b"`
 	ImgC        string `json:"img_c"`
+}
+
+// new error function
+
+func logError(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-Type", "application/json")
+	enableCors(&w)
+	var errorLog ErrorLog
+
+	json.NewDecoder(r.Body).Decode(&errorLog)
+
+	stmt, err := db.Prepare("INSERT INTO errors (error_code, response_msg) VALUES (?,?)")
+	if err != nil {
+		panic(err.Error())
+	}
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	json.Unmarshal(body, &errorLog)
+
+	_, err = stmt.Exec(errorLog.ErrorCode, errorLog.ResponseMsg)
+	if err != nil {
+		panic(err.Error())
+	}
+	fmt.Println("error logged to db")
+
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(errorLog)
 }
 
 // set new user function
@@ -83,7 +120,7 @@ func setUser(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println("New user was created")
 
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusBadGateway)
 	json.NewEncoder(w).Encode(user)
 
 }
@@ -271,6 +308,7 @@ func main() {
 	router.HandleFunc("/products/{id}", getProduct).Methods("GET")             // get single product
 	router.HandleFunc("/products/sort/{category}", getCategory).Methods("GET") // get single category of products
 	router.HandleFunc("/users", setUser).Methods("POST")                       // post a users info to the db
+	router.HandleFunc("/errors", logError).Methods("POST")                     // log an error to the db
 
 	//  Run server
 

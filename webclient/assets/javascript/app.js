@@ -6,152 +6,165 @@ console.log("connected to js file");
 var all, snow, skate, surf, long, body;
 
 // all = document.getElementById('all');
-snow = document.getElementById('snow');
-skate = document.getElementById('skate');
-surf = document.getElementById('surf');
-long = document.getElementById('long');
-body = document.getElementById('body');
+snow = document.getElementById("snow");
+skate = document.getElementById("skate");
+surf = document.getElementById("surf");
+long = document.getElementById("long");
+body = document.getElementById("body");
 
-// axios 
+async function postContact() {
+  // variables to store our user inputs
 
-function postContact() {
+  var firstNameVal = document.getElementById("customer-firstname").value;
+  var lastNameVal = document.getElementById("customer-lastname").value;
+  var emailVal = document.getElementById("customer-email").value;
+  var phoneVal = document.getElementById("customer-phone").value;
+  var prefContactVal, refByVal;
 
-    // variables to store our user inputs
+  // figure out which radio option the user selected
+  if (document.getElementById("phone-btn").checked) {
+    prefContactVal = document.getElementById("phone-btn").value;
+  } else if (document.getElementById("email-btn").checked) {
+    prefContactVal = document.getElementById("email-btn").value;
+  }
 
-    var firstNameVal = document.getElementById('customer-firstname').value;
-    var lastNameVal = document.getElementById('customer-lastname').value;
-    var emailVal = document.getElementById('customer-email').value;
-    var phoneVal = document.getElementById('customer-phone').value;
-    var prefContactVal, refByVal;
+  // figure out which checkbox option the user selected
+  if (document.getElementById("conf-btn").checked) {
+    refByVal = document.getElementById("conf-btn").value;
+  } else if (document.getElementById("tv-btn").checked) {
+    refByVal = document.getElementById("tv-btn").value;
+  } else if (document.getElementById("radio-btn").checked) {
+    refByVal = document.getElementById("radio-btn").value;
+  } else if (document.getElementById("wom-btn").checked) {
+    refByVal = document.getElementById("wom-btn").value;
+  } else if (document.getElementById("other-btn").checked) {
+    refByVal = document.getElementById("other-btn").value;
+  }
 
+  // check which boxes are checked.
+  // push to arr
+  // convert arr to string
+  // save to var
+  // push to db
 
-    // figure out which radio option the user selected
-    if (document.getElementById('phone-btn').checked) {
-        prefContactVal = document.getElementById('phone-btn').value;
-      } else if (document.getElementById('email-btn').checked) {
-        prefContactVal = document.getElementById('email-btn').value;
-    };
+  // our user object
+  var user = {
+    firstName: firstNameVal,
+    lastName: lastNameVal,
+    email: emailVal,
+    phone: phoneVal,
+    pref_contact: prefContactVal,
+    referred_by: refByVal
+  };
 
-    // figure out which checkbox option the user selected
-    if (document.getElementById('conf-btn').checked) {
-      refByVal = document.getElementById('conf-btn').value;
-    } else if (document.getElementById('tv-btn').checked) {
-      refByVal = document.getElementById('tv-btn').value;
-    } else if (document.getElementById('radio-btn').checked) {
-        refByVal = document.getElementById('radio-btn').value;
-    } else if (document.getElementById('wom-btn').checked) {
-        refByVal = document.getElementById('wom-btn').value;
-    } else if (document.getElementById('other-btn').checked) {
-        refByVal = document.getElementById('other-btn').value;
-    };
+  // format our user object into JSON
+  JSONUser = JSON.stringify(user);
 
-    // our user object
-    var user = {
-        firstName: firstNameVal,
-        lastName: lastNameVal,
-        email: emailVal,
-        phone: phoneVal,
-        pref_contact: prefContactVal,
-	    referred_by:  refByVal
-        };
+  // check our inputs
+  console.log(prefContactVal);
+  console.log(refByVal);
+  console.log(JSONUser);
 
-    // format our user object into JSON
-    JSONUser = JSON.stringify(user);
+  async function userPost() {
+    const respData = await fetch("http://localhost:8080/users", {
+      mode: "no-cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8"
+      },
 
-    // check our inputs
-    console.log(prefContactVal);
-    console.log(refByVal);
-    console.log(JSONUser);
+      body: JSONUser
+    });
 
-    // our post request
-    fetch('http://localhost:8080/users', {
-        mode: 'no-cors',
-        method: 'POST',
+    console.log(JSON.stringify(respData.status));
+    console.log(respData.ok);
+
+    if (respData.ok === true) {
+      body.innerHTML = generateResponse(respData, "post");
+      console.log("true response" + respData.ok);
+    } else {
+      console.log("else hit");
+      var JSONerr = {
+        error_code: respData.status,
+        response_msg: respData.statusText
+      };
+
+      JSONerr = JSON.stringify(JSONerr);
+
+      const errReport = await fetch("http://localhost:8080/errors", {
+        mode: "no-cors",
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json;charset=UTF-8',
+          "Content-Type": "application/json;charset=UTF-8"
         },
 
-        body: JSONUser
-    })
+        body: JSONerr
+      });
+    }
+  }
 
-        .then((data) => {
-        body.innerHTML = generateResponse(data, 'post');
-        // console.log(data);
-    })
-
+  userPost();
 }
 
 function getProduct(id) {
+  console.log("view product was clicked");
 
-    console.log('view product was clicked');
-
-    // get single produc
-    // query api
-    axios.get('http://localhost:8080/products/' + id)
-        // response 
-        .then((response) => {
-            body.innerHTML = generateResponse(response, 'single');
-            console.log(response.data);
-
-        });
+  // get single produc
+  // query api
+  axios
+    .get("http://localhost:8080/products/" + id)
+    // response
+    .then(response => {
+      body.innerHTML = generateResponse(response, "single");
+      console.log(response.data);
+    });
 }
 
 function getProducts(param) {
-
-    if (param === 'all') {
-
+  if (param === "all") {
     // get all products
 
     // query api
-    axios.get('http://localhost:8080/products')
-        // response 
-        .then((response) => {
-            content.innerHTML = generateResponse(response, 'all');
-
-        });
-    } else if (param === 'longboards') {
-
-        axios.get('http://localhost:8080/products/sort/' + param)
-        // response 
-        .then((response) => {
-            content.innerHTML = generateResponse(response, 'longboards');
-
-        });
-
-    } else if (param === 'skateboards') {
-
-        axios.get('http://localhost:8080/products/sort/' + param)
-        // response 
-        .then((response) => {
-            content.innerHTML = generateResponse(response, 'skateboards');
-
-        });
-
-    } else if (param === 'snowboards') {
-
-        axios.get('http://localhost:8080/products/sort/' + param)
-        // response 
-        .then((response) => {
-            content.innerHTML = generateResponse(response, 'snowboards');
-
-        });
-
-    } else if (param === 'surfboards') {
-
-        axios.get('http://localhost:8080/products/sort/' + param)
-        // response 
-        .then((response) => {
-            content.innerHTML = generateResponse(response, 'surfboards');
-
-        });
-
-    }
-
+    axios
+      .get("http://localhost:8080/products")
+      // response
+      .then(response => {
+        content.innerHTML = generateResponse(response, "all");
+        console.log(response);
+      });
+  } else if (param === "longboards") {
+    axios
+      .get("http://localhost:8080/products/sort/" + param)
+      // response
+      .then(response => {
+        content.innerHTML = generateResponse(response, "longboards");
+      });
+  } else if (param === "skateboards") {
+    axios
+      .get("http://localhost:8080/products/sort/" + param)
+      // response
+      .then(response => {
+        content.innerHTML = generateResponse(response, "skateboards");
+      });
+  } else if (param === "snowboards") {
+    axios
+      .get("http://localhost:8080/products/sort/" + param)
+      // response
+      .then(response => {
+        content.innerHTML = generateResponse(response, "snowboards");
+      });
+  } else if (param === "surfboards") {
+    axios
+      .get("http://localhost:8080/products/sort/" + param)
+      // response
+      .then(response => {
+        content.innerHTML = generateResponse(response, "surfboards");
+      });
+  }
 }
 
 function loadHTML(param) {
-
-        body.innerHTML = `
+  body.innerHTML = `
         
         <header class="flex-container header">
             <a href="index.html"><h1 id="logo">Nollie</h1></a>
@@ -207,47 +220,34 @@ function loadHTML(param) {
             </div>
         </footer>`;
 
-        if (param === 'all') {
-
-            // load all products
-            getProducts('all');
-
-        } else if (param === 'longboards') {
-
-            // load all longboards
-            getProducts('longboards');
-
-        } else if (param === 'skateboards') {
-
-            // load all skateboards
-            getProducts('skateboards');
-
-        } else if (param === 'snowboards') {
-
-            // load all snowboards
-            getProducts('snowboards');
-
-        } else if (param === 'surfboards') {
-
-            // load all surfboards
-            getProducts('surfboards');
-
-        } 
-
+  if (param === "all") {
+    // load all products
+    getProducts("all");
+  } else if (param === "longboards") {
+    // load all longboards
+    getProducts("longboards");
+  } else if (param === "skateboards") {
+    // load all skateboards
+    getProducts("skateboards");
+  } else if (param === "snowboards") {
+    // load all snowboards
+    getProducts("snowboards");
+  } else if (param === "surfboards") {
+    // load all surfboards
+    getProducts("surfboards");
+  }
 }
 
 function generateResponse(response, param) {
-    console.log(response);
-    var responseData = response.data;
-    var output = '';
+  console.log(response);
+  var responseData = response.data;
+  var output = "";
 
-    if (param === 'all') {
+  if (param === "all") {
+    console.log("all block entered");
 
-        console.log('all block entered');
-
-        for (i = 0; i < responseData.length; i++) {
-
-            output += `
+    for (i = 0; i < responseData.length; i++) {
+      output += `
 
             <div class="flex-product">
             <img class="product-thumbnail" src="./${responseData[i].img_main}" height="60%"> 
@@ -256,16 +256,12 @@ function generateResponse(response, param) {
             <p class="product-description">${responseData[i].description}</p>
             <button class="sku" onclick="getProduct(${responseData[i].id})">View!</button>
             </div>`;
+    }
+  } else if (param === "longboards") {
+    console.log("longboards block entered");
 
-        }
-
-    } else if (param === 'longboards') {
-
-        console.log('longboards block entered');
-
-        for (i = 0; i < responseData.length; i++) {
-
-            output += `
+    for (i = 0; i < responseData.length; i++) {
+      output += `
 
             <div class="flex-product">
             <img class="product-thumbnail" src="./${responseData[i].img_main}" height="60%"> 
@@ -274,16 +270,12 @@ function generateResponse(response, param) {
             <p class="product-description">${responseData[i].description}</p>
             <button class="sku" onclick="getProduct(${responseData[i].id})">View!</button>
             </div>`;
+    }
+  } else if (param === "skateboards") {
+    console.log("skateboards block entered");
 
-        } 
-    
-    } else if (param === 'skateboards') {
-
-        console.log('skateboards block entered');
-
-        for (i = 0; i < responseData.length; i++) {
-
-            output += `
+    for (i = 0; i < responseData.length; i++) {
+      output += `
 
             <div class="flex-product">
             <img class="product-thumbnail" src="./${responseData[i].img_main}" height="60%"> 
@@ -292,16 +284,12 @@ function generateResponse(response, param) {
             <p class="product-description">${responseData[i].description}</p>
             <button class="sku" onclick="getProduct(${responseData[i].id})">View!</button>
             </div>`;
+    }
+  } else if (param === "snowboards") {
+    console.log("snowboardsboards block entered");
 
-        } 
-
-    } else if (param === 'snowboards') {
-
-        console.log('snowboardsboards block entered');
-
-        for (i = 0; i < responseData.length; i++) {
-
-            output += `
+    for (i = 0; i < responseData.length; i++) {
+      output += `
 
             <div class="flex-product">
             <img class="product-thumbnail" src="./${responseData[i].img_main}" height="60%"> 
@@ -310,16 +298,12 @@ function generateResponse(response, param) {
             <p class="product-description">${responseData[i].description}</p>
             <button class="sku" onclick="getProduct(${responseData[i].id})">View!</button>
             </div>`;
+    }
+  } else if (param === "surfboards") {
+    console.log("surfboards block entered");
 
-        } 
-
-    } else if (param === 'surfboards') {
-
-        console.log('surfboards block entered');
-
-        for (i = 0; i < responseData.length; i++) {
-
-            output += `
+    for (i = 0; i < responseData.length; i++) {
+      output += `
 
             <div class="flex-product">
             <img class="product-thumbnail" src="./${responseData[i].img_main}" height="60%"> 
@@ -328,14 +312,11 @@ function generateResponse(response, param) {
             <p class="product-description">${responseData[i].description}</p>
             <button class="sku" onclick="getProduct(${responseData[i].id})">View!</button>
             </div>`;
+    }
+  } else if (param === "single") {
+    console.log("single block entered");
 
-        } 
-
-    } else if (param === 'single') {
-
-        console.log('single block entered');
-
-        output += `
+    output += `
 
         <header class="flex-container header">
             <a href="index.html"><h1 id="logo">Nollie</h1></a>
@@ -392,10 +373,8 @@ function generateResponse(response, param) {
             </div>
         </footer>
         <script src="assets/javascript/app.js"></script>`;
-
-    } else if (param === 'post') {
-
-        output += `
+  } else if (param === "post") {
+    output += `
 
         <header class="flex-container header">
             <a href="index.html"><h1 id="logo">Nollie</h1></a>
@@ -425,9 +404,8 @@ function generateResponse(response, param) {
                     aliquid natus porro possimus hic quam culpa, qui animi ipsum sit.</p>
             </div>
     </footer>
-    <script src="assets/javascript/app.js"></script>`
-    
-    }
+    <script src="assets/javascript/app.js"></script>`;
+  }
 
-    return output;
+  return output;
 }
