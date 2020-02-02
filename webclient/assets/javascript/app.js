@@ -1,20 +1,15 @@
 console.log("connected to js file");
 
-// require axios
-// var axios = require('axios');
-
 var all, snow, skate, surf, long, body;
 
-// all = document.getElementById('all');
 snow = document.getElementById("snow");
 skate = document.getElementById("skate");
 surf = document.getElementById("surf");
 long = document.getElementById("long");
 body = document.getElementById("body");
 
-async function postContact() {
+function postContact() {
   // variables to store our user inputs
-
   var firstNameVal = document.getElementById("customer-firstname").value;
   var lastNameVal = document.getElementById("customer-lastname").value;
   var emailVal = document.getElementById("customer-email").value;
@@ -75,8 +70,9 @@ async function postContact() {
   console.log(refByVal);
   console.log(JSONUser);
 
-  async function userPost() {
-    const respData = await fetch("http://localhost:8080/users", {
+  // call to db
+  function userPost() {
+    const respData = fetch("http://localhost:8080/users", {
       mode: "no-cors",
       method: "POST",
       headers: {
@@ -86,58 +82,56 @@ async function postContact() {
       body: JSONUser
     });
 
-    console.log(JSON.stringify(respData.status));
-    console.log(respData.ok);
+    body.innerHTML = generateResponse(respData, "post");
 
-    if (respData.ok === true) {
-      body.innerHTML = generateResponse(respData, "post");
-      console.log("true response" + respData.ok);
-    } else {
-      console.log("else hit");
-      var JSONerr = {
-        error_code: respData.status,
-        response_msg: respData.statusText
-      };
+    // error handling
+    //   if (respData.ok === true) {
+    //     //  grab correct html and display
+    //     body.innerHTML = generateResponse(respData, "post");
+    //     console.log("true response" + respData.ok);
+    //   } else {
+    //     console.log("else hit");
+    //     var JSONerr = {
+    //       error_code: respData.status,
+    //       response_msg: respData.statusText
+    //     };
 
-      JSONerr = JSON.stringify(JSONerr);
+    //     JSONerr = JSON.stringify(JSONerr);
 
-      const errReport = await fetch("http://localhost:8080/errors", {
-        mode: "no-cors",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8"
-        },
+    //     const errReport = await fetch("http://localhost:8080/errors", {
+    //       mode: "no-cors",
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json;charset=UTF-8"
+    //       },
 
-        body: JSONerr
-      });
-    }
+    //       body: JSONerr
+    //     });
+    //   }
+    // }
   }
-
   userPost();
 }
 
+// get request for sinlge product
 function getProduct(id) {
   console.log("view product was clicked");
 
-  // get single produc
-  // query api
   axios
     .get("http://localhost:8080/products/" + id)
-    // response
+
     .then(response => {
       body.innerHTML = generateResponse(response, "single");
       console.log(response.data);
     });
 }
 
+// get request for all or product category
 function getProducts(param) {
   if (param === "all") {
-    // get all products
-
-    // query api
     axios
       .get("http://localhost:8080/products")
-      // response
+
       .then(response => {
         content.innerHTML = generateResponse(response, "all");
         console.log(response);
@@ -145,34 +139,35 @@ function getProducts(param) {
   } else if (param === "longboards") {
     axios
       .get("http://localhost:8080/products/sort/" + param)
-      // response
+
       .then(response => {
         content.innerHTML = generateResponse(response, "longboards");
       });
   } else if (param === "skateboards") {
     axios
       .get("http://localhost:8080/products/sort/" + param)
-      // response
+
       .then(response => {
         content.innerHTML = generateResponse(response, "skateboards");
       });
   } else if (param === "snowboards") {
     axios
       .get("http://localhost:8080/products/sort/" + param)
-      // response
+
       .then(response => {
         content.innerHTML = generateResponse(response, "snowboards");
       });
   } else if (param === "surfboards") {
     axios
       .get("http://localhost:8080/products/sort/" + param)
-      // response
+
       .then(response => {
         content.innerHTML = generateResponse(response, "surfboards");
       });
   }
 }
 
+// dynamic content loading for client
 function loadHTML(param) {
   body.innerHTML = `
         
@@ -392,6 +387,7 @@ function generateResponse(response, param) {
         </footer>
         <script src="assets/javascript/app.js"></script>`;
   } else if (param === "post") {
+    console.log("post function hit");
     output += `
 
         <header class="flex-container header">
