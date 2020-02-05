@@ -9,12 +9,21 @@ var phoneA = document.getElementById("customer-phone-a").value;
 var phoneB = document.getElementById("customer-phone-b").value;
 var phoneC = document.getElementById("customer-phone-c").value;
 
+var inputs = [];
+
+inputs.push(firstNameVal, lastNameVal, emailVal, commentsVal);
+
+// validation for phone
+
+phoneVal = phoneA + phoneB + phoneC;
+
 function checkForm(form) {
-  // validation fails if the input is blank
-  if (form.inputfield.value == "") {
-    alert("Error: Input is empty!");
-    form.inputfield.focus();
-    return false;
+  for (i = 0; i < inputs.length; i++) {
+    if (form.inputfield.value == "") {
+      alert("Error: Input is empty!");
+      form.inputfield.focus();
+      return false;
+    }
   }
 
   // regular expression to match only alphanumeric characters and spaces

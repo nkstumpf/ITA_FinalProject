@@ -182,6 +182,7 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		// create a new variable and set its value to our existing struct
 		var product Product
+		// scan the rows and check for discrepancies and store in "err" so we know what the error was for
 		err := rows.Scan(&product.ID, &product.Category, &product.Name, &product.Description, &product.Price, &product.ImgMain, &product.ImgB, &product.ImgC)
 		// if there is an error do this
 		if err != nil {
@@ -203,6 +204,8 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 // Get all products from a specific category function
 func getCategory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	// Paths can have variables. They are defined using the format {name} or {name:pattern}.
+	// The names are used to create a map of route variables which can be retrieved calling mux.Vars()
 	params := mux.Vars(r)
 	productCategory := params["category"]
 	products := []Product{}
